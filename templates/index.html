@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block main %}
+    <form class="container" action="/duration" method="get">
+        <div class="mb-3">
+            <label for="youtubeURLInput" class="form-label">Enter a YouTube URL </label>
+            <input aria-describedby="emailHelp"
+                   class="form-control" 
+                   id="youtubeURLInput"
+                   name="url" 
+                   pattern="https://www.youtube.com/.*"
+                   placeholder="YouTube URL"
+                   type="url"
+                   required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
