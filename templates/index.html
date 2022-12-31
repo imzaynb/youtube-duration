@@ -3,18 +3,24 @@
 {% block title %} Home {% endblock %}
 
 {% block main %}
-    <form class="container" action="/duration" method="get">
-        <div class="mb-3">
-            <label for="youtubeURLInput" class="form-label">Enter a YouTube URL </label>
-            <input aria-describedby="emailHelp"
-                   class="form-control" 
-                   id="youtubeURLInput"
-                   name="url" 
-                   pattern="https://www.youtube.com/.*"
-                   placeholder="YouTube URL"
-                   type="url"
-                   required>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+<div class="row justify-content-md-center">
+    <div class="col-lg-6">
+        <h1 class="mb-5"> <img id="header-img" src="/static/favicon.ico" alt="stopwatch"> YouTube Duration </h1>
+        <p> I made this application to determine the length of time it would take to consume
+            a YouTube video or playlist at faster speeds. </p>
+        <p> Simply enter in a YouTube video or playlist, and use the slider on that page to determine the time it would
+            take to watch a video at that speed. Try it out! </p>
+    </div>
+    <div class="col-lg-6">
+        <form class="container" action="/duration" method="get">
+            <div class="mb-3">
+                <label for="youtubeURLInput" class="form-label">Enter a YouTube URL </label>
+                <input class="form-control" id="youtubeURLInput" name="url" pattern="https://www.youtube.com/.*"
+                    placeholder="YouTube URL" type="url" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
 {% endblock %}
