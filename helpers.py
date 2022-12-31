@@ -4,6 +4,7 @@ from googleapiclient.discovery import build
 import re
 from datetime import timedelta
 from functools import reduce
+from urllib.parse import urlparse
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -88,3 +89,9 @@ def parse_url(url: str) -> tuple[str]:
         return ("video", video_match.group(1)[2:]) 
     elif playlist_match:
         return ("playlist", playlist_match.group(1)[5:])
+
+
+def check_valid_url(url: str) -> bool:
+    parse_obj = urlparse(url)
+    return parse_obj.netloc == "www.youtube.com" and parse_obj.path in ["/watch", "/playlist"] and len(parse_obj.query) > 5
+

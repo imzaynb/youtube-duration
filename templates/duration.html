@@ -4,7 +4,7 @@
 
 {% block main %}
 <div class="row align-items-center">
-    <div class="col pb-5">
+    <div class="col pb-3">
         {% if match_type == "playlist" %}
         <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list={{id}}"
             title="YouTube video player" frameborder="0"
@@ -18,7 +18,7 @@
         {% endif %}
     </div>
 
-    <div class="col">
+    <div class="col pb-3">
         <p> Current speed: <span id="speed">1</span>x </p>
         <p> Current duration: <span id="duration">{{duration}}</span></p>
         <div class="slidecontainer">

@@ -1,7 +1,9 @@
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, flash
+import os
 
 from helpers import (
     parse_url,
+    check_valid_url,
     playlist_items_from_playlist_id,
     video_objects_from_video_ids,
     playlist_duration_from_video_objects
@@ -12,6 +14,7 @@ app = Flask(__name__)
 
 # ensure templates are auto-reloaded so we don't have to restart the app every time!
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.secret_key = os.getenv("SECRET_KEY")
 
 @app.after_request
 def after_request(response):
@@ -30,6 +33,14 @@ def index():
 @app.route("/duration", methods=["GET"])
 def duration():
     url = request.args.get("url")
+
+    if not url:
+        flash("Please input a url into the search bar.")
+        return redirect("/")
+    elif not check_valid_url(url):
+        flash("The url type was not valid. Please put a valid YouTube video or playlist URL into the search bar.")
+        return redirect("/")
+
     match_type, id = parse_url(url)
     duration = 0
     if match_type == "playlist":
