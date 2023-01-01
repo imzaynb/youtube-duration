@@ -2,3 +2,15 @@
     width: 3.5rem;
     margin-top: -7px;
 }
+
+iframe {
+    width: 80vw;
+    height: 45vw;
+}
+
+@media screen and (min-width: 675px) {
+  iframe {
+    width: 560px;
+    height: 315px;
+  }
+}

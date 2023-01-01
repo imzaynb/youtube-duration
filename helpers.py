@@ -13,11 +13,13 @@ API_KEY = os.getenv("API_KEY")
 # TODO: make async await
 def playlist_items_from_playlist_id(id: str) -> list[dict]:
     youtube = build("youtube", "v3", developerKey=API_KEY)
-    
+
     page_token = ""
     playlist_items = []
     while True:
-        request = youtube.playlistItems().list(part="contentDetails", playlistId=id, pageToken=page_token)
+        request = youtube.playlistItems().list(
+            part="contentDetails", playlistId=id, pageToken=page_token
+        )
         try:
             response = request.execute()
         except HttpError:
@@ -32,14 +34,15 @@ def playlist_items_from_playlist_id(id: str) -> list[dict]:
 
     return playlist_items
 
+
 def video_objects_from_video_ids(ids: list[str]) -> list[dict]:
     youtube = build("youtube", "v3", developerKey=API_KEY)
 
-    videos = []    
+    videos = []
 
     while True:
         request = youtube.videos().list(
-            part="contentDetails", id=",".join(ids[:min(40, len(ids))])
+            part="contentDetails", id=",".join(ids[: min(40, len(ids))])
         )
 
         try:
@@ -98,9 +101,9 @@ def parse_url(url: str) -> tuple[str]:
     playlist_match = playlist_id_pattern.search(url)
 
     if video_match:
-        return ("video", video_match.group(1)[2:]) 
+        return ("video", video_match.group(1)[2:])
     elif short_youtube_match:
-        return ("video", short_youtube_match.group(1)) 
+        return ("video", short_youtube_match.group(1))
     elif playlist_match:
         return ("playlist", playlist_match.group(1)[5:])
 
@@ -108,9 +111,10 @@ def parse_url(url: str) -> tuple[str]:
 def check_valid_url(url: str) -> bool:
     parse_obj = urlparse(url)
     return (
-        (parse_obj.netloc == "www.youtube.com" and parse_obj.path in ["/watch", "/playlist"] and len(parse_obj.query) > 5) or
-        (parse_obj.netloc == "youtu.be" and len(parse_obj.path) > 5)
-    )
+        parse_obj.netloc == "www.youtube.com"
+        and parse_obj.path in ["/watch", "/playlist"]
+        and len(parse_obj.query) > 5
+    ) or (parse_obj.netloc == "youtu.be" and len(parse_obj.path) > 5)
 
 
 if __name__ == "__main__":
