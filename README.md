@@ -5,3 +5,5 @@ Often, when watching YouTube, I like to increase the playback rate to consume th
 I created the YouTube Duration app to figure out how long a YouTube playlist/video would take at higher speeds!
 
 Simply enter in the link of a YouTube video/playlist URL and adjust the slider to the desired speed!
+
+Visit this as a website @ [imzaynb.pythonanywhere.com](imzaynb.pythonanywhere.com)!

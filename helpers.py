@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 import re
 from datetime import timedelta
 from functools import reduce
@@ -17,7 +18,11 @@ def playlist_items_from_playlist_id(id: str) -> list[dict]:
     playlist_items = []
     while True:
         request = youtube.playlistItems().list(part="contentDetails", playlistId=id, pageToken=page_token)
-        response = request.execute()
+        try:
+            response = request.execute()
+        except HttpError:
+            return None
+
         playlist_items += [playlist_item for playlist_item in response["items"]]
 
         if "nextPageToken" in response:
@@ -36,7 +41,11 @@ def video_objects_from_video_ids(ids: list[str]) -> list[dict]:
         request = youtube.videos().list(
             part="contentDetails", id=",".join(ids[:min(40, len(ids))])
         )
-        response = request.execute()
+
+        try:
+            response = request.execute()
+        except HttpError:
+            return None
 
         videos += response["items"]
 
@@ -45,7 +54,7 @@ def video_objects_from_video_ids(ids: list[str]) -> list[dict]:
         else:
             break
 
-    return videos
+    return videos if videos != [] else None
 
 
 def playlist_duration_from_video_objects(videos: list[dict]) -> int:
@@ -81,17 +90,28 @@ def duration_from_duration_string(duration: str) -> float:
 def parse_url(url: str) -> tuple[str]:
     video_id_pattern = re.compile(r"(v=[\w-]+)&?")
     video_match = video_id_pattern.search(url)
-    
+
+    short_youtube_id_pattern = re.compile(r"https://youtu.be/([\w-]+)&?")
+    short_youtube_match = short_youtube_id_pattern.search(url)
+
     playlist_id_pattern = re.compile(r"(list=[\w-]+)&?")
     playlist_match = playlist_id_pattern.search(url)
 
     if video_match:
         return ("video", video_match.group(1)[2:]) 
+    elif short_youtube_match:
+        return ("video", short_youtube_match.group(1)) 
     elif playlist_match:
         return ("playlist", playlist_match.group(1)[5:])
 
 
 def check_valid_url(url: str) -> bool:
     parse_obj = urlparse(url)
-    return parse_obj.netloc == "www.youtube.com" and parse_obj.path in ["/watch", "/playlist"] and len(parse_obj.query) > 5
+    return (
+        (parse_obj.netloc == "www.youtube.com" and parse_obj.path in ["/watch", "/playlist"] and len(parse_obj.query) > 5) or
+        (parse_obj.netloc == "youtu.be" and len(parse_obj.path) > 5)
+    )
 
+
+if __name__ == "__main__":
+    print(video_objects_from_video_ids("animeee"))

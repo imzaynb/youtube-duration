@@ -45,12 +45,17 @@ def duration():
     duration = 0
     if match_type == "playlist":
         playlist_items = playlist_items_from_playlist_id(id)
+        if playlist_items == None:
+            flash("The YouTube playlist id could not be found. Please try a different URL.")
+            return redirect("/")
         video_ids = [item["contentDetails"]["videoId"] for item in playlist_items]
         videos = video_objects_from_video_ids(video_ids)
         duration = playlist_duration_from_video_objects(videos)
     elif match_type == "video":
         video = video_objects_from_video_ids([id])
+        if video == None:
+            flash("The YouTube video id could not be found. Please try a different URL.")
+            return redirect("/")
         duration = playlist_duration_from_video_objects(video)
     
-    print(duration)
     return render_template("duration.html", id=id, match_type=match_type, duration=duration)
