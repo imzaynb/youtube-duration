@@ -8,6 +8,7 @@ Simply enter in the link of a YouTube video/playlist URL and adjust the slider t
 
 Visit this as a website @ [imzaynb.pythonanywhere.com](http://imzaynb.pythonanywhere.com)!
 
+Also, here is a video demo of the app!: [https://youtu.be/hr1DW5v6IL4](https://youtu.be/hr1DW5v6IL4)
 
 ## About The Project
 
