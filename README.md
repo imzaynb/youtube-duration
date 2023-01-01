@@ -6,4 +6,4 @@ I created the YouTube Duration app to figure out how long a YouTube playlist/vid
 
 Simply enter in the link of a YouTube video/playlist URL and adjust the slider to the desired speed!
 
-Visit this as a website @ [imzaynb.pythonanywhere.com](imzaynb.pythonanywhere.com)!
+Visit this as a website @ [imzaynb.pythonanywhere.com](http://imzaynb.pythonanywhere.com)!
